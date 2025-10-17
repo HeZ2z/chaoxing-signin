@@ -321,8 +321,8 @@ process.on('SIGINT', () => {
 
 // 若在服务器，直接运行
 if (!ENVJSON.env.SERVERLESS)
-  app.listen(5000, () => {
-    console.log('API Server: http://localhost:5000');
+  app.listen(8080, () => {
+    console.log('API Server: http://localhost:8080');
   });
 
 // 导出云函数

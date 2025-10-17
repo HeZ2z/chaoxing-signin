@@ -13,7 +13,7 @@ docker pull ghcr.io/cxorz/chaoxing-sign-cli:latest
 ## 本机部署
 
 ```dockerfile
-docker run --name chaoxing -d -p 80:80 -p 5000:5000 chaoxing-sign-cli
+docker run --name chaoxing -d -p 80:80 -p 8080:8080 chaoxing-sign-cli
 ```
 
 你可以直接通过这个方式创建一个容器，然后使用服务器的IP访问，但直接暴露你服务器的公网IP并不安全（局域网服务器除外），且IP地址不方便记忆，你可以使用一个域名来指向他。
@@ -48,11 +48,11 @@ docker exec -it chaoxing /bin/bash
 # 以下指令在容器内执行
 >vi /app/apps/web/src/config/api.ts
 # 然后修改
-const baseUrl = 'https://chaoxing.yourDomain.com:5000';
+const baseUrl = 'https://chaoxing.yourDomain.com:8080';
 # 这个baseUrl在之前是另一个文件中的，现在已经更改到web/src
 ```
 
-此时你登录会通过你的域名的5000端口进行，你的域名应当指向这个服务器的IP地址，同时服务器`开启5000`端口的访问，并在`nginx`内对`5000`端口进行反代理。
+此时你登录会通过你的域名的8080端口进行，你的域名应当指向这个服务器的IP地址，同时服务器`开启8080`端口的访问，并在`nginx`内对`8080`端口进行反代理。
 
 一个nginx文件示例(这里只展示Server块)：
 
@@ -71,10 +71,10 @@ server {
 	ssl_certificate_key	/your/domain/ssl_key;
 }
 server {
-	listen 5000;
+	listen 8080;
 	server_name yourDomain.com;
 	location / {
-		proxy_pass http://你的超星容器IP:5000;
+		proxy_pass http://你的超星容器IP:8080;
 		proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Real-IP $remote_addr;
@@ -86,19 +86,19 @@ server {
 
 ### 解决方案II
 
-这样非常的不优雅，而且使用域名也会暴露你的服务器IP，如果你想套CDN的话，使用5000端口的服务方法显然是不被接受的。如何只通过一个域名访问呢？
+这样非常的不优雅，而且使用域名也会暴露你的服务器IP，如果你想套CDN的话，使用8080端口的服务方法显然是不被接受的。如何只通过一个域名访问呢？
 
 我们首先来看原来的拓扑图：
 
 ![](https://raw.githubusercontent.com/QLozin/Image/master/newimg/old.png)
 
-一个非常自然的想法就是通过反代理部分文件路径的方式来完成5000端口的访问，这是调整后的拓扑图：
+一个非常自然的想法就是通过反代理部分文件路径的方式来完成8080端口的访问，这是调整后的拓扑图：
 
 ![](https://raw.githubusercontent.com/QLozin/Image/master/newimg/new.png)
 
-> 实际上还有一种办法，就是使用一个域名（或者子域名、字路径）指向5000端口，然后`baseUrl`使用这个域名即可。但这依然需要开放两个端口，对我来说我并不喜欢（而且5000端口已经被占用了）
+> 实际上还有一种办法，就是使用一个域名（或者子域名、字路径）指向8080端口，然后`baseUrl`使用这个域名即可。但这依然需要开放两个端口，对我来说我并不喜欢（而且8080端口已经被占用了）
 
-就是说，将`baseUrl`的地址改为从`yourDomain.com:5000`改成`yourDomain.com/allinone`，但是这样的话他真实的访问地址是`https://yourDomain.com/allinone/login...`，你必须把`allinone`剔除掉才能保证访问正常，这个可以很简单的通过Nginx设置实现。这是示例：
+就是说，将`baseUrl`的地址改为从`yourDomain.com:8080`改成`yourDomain.com/allinone`，但是这样的话他真实的访问地址是`https://yourDomain.com/allinone/login...`，你必须把`allinone`剔除掉才能保证访问正常，这个可以很简单的通过Nginx设置实现。这是示例：
 
 ```nginx
 server {
@@ -117,7 +117,7 @@ server {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_pass http://你的超星容器IP:5000;
+        proxy_pass http://你的超星容器IP:8080;
     }
     ssl_certificate         /ssl/yourDomain.com/cert.pem;
     ssl_certificate_key     /ssl/yourDomain.com/cert.key;

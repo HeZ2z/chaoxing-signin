@@ -111,7 +111,7 @@ pnpm start
 
 ```bash
 docker pull ghcr.io/cxorz/chaoxing-signin:latest
-docker run -d -p 80:80 -p 5000:5000 ghcr.io/cxorz/chaoxing-signin
+docker run -d -p 80:80 -p 8080:8080 ghcr.io/cxorz/chaoxing-signin
 ```
 
 > 出现问题？先仔细阅读相关说明，若仍无法解决请发 issue
