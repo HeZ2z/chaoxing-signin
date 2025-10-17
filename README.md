@@ -5,13 +5,15 @@
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Licence](https://img.shields.io/github/license/cxOrz/chaoxing-signin?style=for-the-badge)
 
+> 原作者已停止维护，本项目从原版 fork 而来，主要用于自己学习和使用，如有需要可提 issue 或 PR 。
+
 基于 Nodejs 实现的一个命令行签到工具，在此基础上使用 React.js + Material UI + Koa 扩展成为 Web 项目。
 
 **功能**： 普通签到、拍照签到、手势签到、位置签到、签到码签到、二维码签到，多用户凭据储存，IM 协议自动签到。
 
 ## 环境 💻
 
-可在任意运行 [NodeJS](https://nodejs.org/en/) > v18.14 的平台签到，Windows、MacOS、Linux ... 
+可在任意运行 [NodeJS](https://nodejs.org/en/) > v18.14 （推荐20及以上） 的平台签到，Windows、MacOS、Linux ...
 
 安卓手机上可以用 Termux 来运行NodeJS程序，[查看Termux教程](./apps/server/src/docs/termux.md) 。
 
@@ -22,7 +24,7 @@
 将仓库克隆到本地
 
 ```bash
-git clone https://github.com/cxOrz/chaoxing-signin.git
+git clone https://github.com/hez2z/chaoxing-signin.git
 ```
 
 进入项目文件夹，并安装依赖
@@ -37,6 +39,7 @@ pnpm install
 ### 命令解释
 
 根目录下：
+
 - `pnpm dev`：运行Web开发服务器、后端接口；
 - `pnpm build`：构建前端页面、转译后端代码；
 - `pnpm start`：运行手动签到；
@@ -44,12 +47,14 @@ pnpm install
 - `pnpm monitor`：启动监听模式，检测到签到将自动签上，无需人工干预；
 
 apps/server 目录下：
+
 - `pnpm build`：转译代码；
 - `pnpm start`：运行手动签到功能，若有签到则手动完成，若无则退出程序；
 - `pnpm serve`：启动接口；
 - `pnpm monitor`：启动监听模式，检测到签到将自动签上，无需人工干预；
 
 apps/web 目录下：
+
 - `pnpm dev`：运行 Web 开发服务器；
 - `pnpm build`：构建静态页面；
 
@@ -58,10 +63,13 @@ apps/web 目录下：
 进入 `apps/server` 目录下，执行以下步骤：
 
 构建代码
+
 ```bash
 pnpm build
 ```
+
 构建完成，后续的运行直至下次变更代码，不需要再构建，可以直接运行
+
 ```bash
 pnpm start
 ```
@@ -80,7 +88,7 @@ pnpm start
 
 ### 拍照签到
 
-需要事先准备一张用来提交的照片。浏览器访问超星云盘：https://pan-yz.chaoxing.com ，在根目录上传一张你准备的照片，命名为 `0.jpg` 或 `0.png` 。若使用 UI 仓库的项目(查看`高级`)，不需要上传云盘，可以直接选择图片提交签到。
+需要事先准备一张用来提交的照片。浏览器访问超星云盘：<https://pan-yz.chaoxing.com> ，在根目录上传一张你准备的照片，命名为 `0.jpg` 或 `0.png` 。若使用 UI 仓库的项目(查看`高级`)，不需要上传云盘，可以直接选择图片提交签到。
 
 ### 普通签到&手势签到&签到码签到
 
@@ -123,11 +131,10 @@ docker run -d -p 80:80 -p 8080:8080 ghcr.io/cxorz/chaoxing-signin
 
 ## 贡献须知
 
-> 由于作者精力有限，自 2023.6.10 起，本项目不再维护，欢迎热心同学们贡献代码。
-
 发起 pr 之前务必先发起issue进行讨论，之后新建一个分支(以提供的功能命名），并在此分支完成你的代码即可提交 pr。
 
 必要条件：
+
 - 运行 `turbo run lint` 无错误出现，可以有警告
 - 测试所有功能全部正常
 
